@@ -59,8 +59,10 @@ import {NamePipe} from './name.pipe';
     <h1>{{title}}</h1>
     <h2>My Heroes</h2>
     <button (click)="sortVal = !sortVal">{{sortVal ? 'Desc' : 'Asc'}}</button>
+    <button (click)="sortBy = 'id'" [style.color]="sortBy === 'id' ? 'red' : '#888'">id</button>
+    <button (click)="sortBy = 'name'" [style.color]="sortBy === 'name' ? 'red' : '#888'">name</button>
     <ul class="heroes">
-      <li *ngFor="#hero of (heroes | namePipe : sortVal : 'id')"
+      <li *ngFor="#hero of (heroes | namePipe : sortVal : sortBy)"
         [class.selected]="hero === selectedHero"
         (click)="onSelect(hero)">
         <span class="badge">{{hero.id}}</span> {{hero.name}}

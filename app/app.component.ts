@@ -1,9 +1,8 @@
-import {Component} from 'angular2/core';
-
-export class Hero {
-    id: number;
-    name: string;
-}
+import {Component, OnInit} from 'angular2/core';
+import {Hero} from './hero';
+import {HeroDetailComponent} from './hero-detail.component';
+import {HeroService} from './hero.service';
+import {NamePipe} from './name.pipe';
 
 @Component({
         styles:[`
@@ -59,40 +58,32 @@ export class Hero {
     template:`
     <h1>{{title}}</h1>
     <h2>My Heroes</h2>
+    <button (click)="sortVal = !sortVal">{{sortVal ? 'Desc' : 'Asc'}}</button>
     <ul class="heroes">
-      <li *ngFor="#hero of heroes"
+      <li *ngFor="#hero of (heroes | namePipe : sortVal : 'id')"
         [class.selected]="hero === selectedHero"
         (click)="onSelect(hero)">
         <span class="badge">{{hero.id}}</span> {{hero.name}}
       </li>
     </ul>
-    <div *ngIf="selectedHero">
-      <h2>{{selectedHero.name}} details!</h2>
-      <div><label>id: </label>{{selectedHero.id}}</div>
-      <div>
-        <label>name: </label>
-        <input [(ngModel)]="selectedHero.name" placeholder="name"/>
-      </div>
-    </div>
-  `
+    <my-hero-detail [hero]="selectedHero"></my-hero-detail>
+  `,
+    directives: [HeroDetailComponent],
+    providers: [HeroService],
+    pipes: [NamePipe]
 })
 
-export class AppComponent {
+export class AppComponent implements OnInit {
+    sortVal = false;
+    heroes;
+    getHeroes() {
+        this._heroService.getHeroes().then(heroes => this.heroes = heroes);
+    }
+    ngOnInit() {
+        this.getHeroes()
+    }
+    constructor(private _heroService: HeroService) { }
     title = 'Tour of Heroes';
     onSelect(hero: Hero) { this.selectedHero = hero; }
     selectedHero: Hero;
-    heroes = HEROES;
 }
-
-var HEROES: Hero[] = [
-    { "id": 11, "name": "Mr. Nice" },
-    { "id": 12, "name": "Narco" },
-    { "id": 13, "name": "Bombasto" },
-    { "id": 14, "name": "Celeritas" },
-    { "id": 15, "name": "Magneta" },
-    { "id": 16, "name": "RubberMan" },
-    { "id": 17, "name": "Dynama" },
-    { "id": 18, "name": "Dr IQ" },
-    { "id": 19, "name": "Magma" },
-    { "id": 20, "name": "Tornado" }
-];

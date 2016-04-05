@@ -35,7 +35,7 @@ System.register(['angular2/core', 'lodash'], function(exports_1, context_1) {
                     }
                 };
                 NamePipe = __decorate([
-                    core_1.Pipe({ name: 'namePipe' }), 
+                    core_1.Pipe({ name: 'namePipe', pure: false }), 
                     __metadata('design:paramtypes', [])
                 ], NamePipe);
                 return NamePipe;

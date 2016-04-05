@@ -69,6 +69,8 @@ import {NamePipe} from './name.pipe';
       </li>
     </ul>
     <my-hero-detail [hero]="selectedHero"></my-hero-detail>
+    <input type="text" placeholder="Add Hero" [(ngModel)]="heroToAdd">
+    <button (click)="addHero(heroToAdd)">Add Hero</button>
   `,
     directives: [HeroDetailComponent],
     providers: [HeroService],
@@ -78,6 +80,9 @@ import {NamePipe} from './name.pipe';
 export class AppComponent implements OnInit {
     sortVal = false;
     heroes;
+    addHero(heroToAdd) {
+        this._heroService.addHero(heroToAdd);
+    }
     getHeroes() {
         this._heroService.getHeroes().then(heroes => this.heroes = heroes);
     }
